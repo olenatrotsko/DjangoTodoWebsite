@@ -21,15 +21,12 @@
             <td>
                 {% if todo.is_completed %}
 
-
                 YES <i class="check icon green"></i>
 
                 {% else %}
                 NO
                 
-                
-              {% endif %}
-            
+                {% endif %}
             
             </td>
 
@@ -45,6 +42,25 @@
         </tr>
         {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+          <th>
+         <a href="?filter=all">All {{all_count}}</a> 
+          </th>
+          <th>
+          <a href="?filter=incomplete">
+          {{incomplete_count}} Remaining 
+          </a> 
+          </th>
+          <th>
+            <a href="?filter=complete">
+          {{completed_count}} Completed
+   
+          </a> 
+          </th>
+          <th></th>
+        </tr>
+      </tfoot>
 </table>
 
 
