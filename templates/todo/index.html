@@ -1,3 +1,61 @@
 {% include "_partials/base.html" %}
 
-<h2>Hello from index</h2>
+<h2>List of Todos</h2>
+
+{% if todos %}
+
+<table class="ui table">
+    <head>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>Actions</th>
+        </tr>
+    </head>
+    <tbody>
+        {% for todo in todos %}
+        <tr>
+            <td>{{ todo.title }}</td>
+            <td>{{ todo.description }}</td>
+            <td>
+                {% if todo.is_completed %}
+
+
+                YES <i class="check icon green"></i>
+
+                {% else %}
+                NO
+                
+                
+              {% endif %}
+            
+            
+            </td>
+
+            <td>
+                <a href="" class="ui button">
+                    <i class="eye icon"></i>
+                </a>
+            
+                <a href="" class="ui button">
+                    <i class="pencil icon"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% else %}
+
+<div class="ui message">
+    <div class="header">
+        No Todos
+    </div>
+    <p>You can create your first todo <a href={% url 'create-todo' %}> Add new </a></p>
+</div>
+
+{% endif %}
+

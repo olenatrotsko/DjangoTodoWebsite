@@ -6,7 +6,9 @@ from .forms import TodoForm
 from .models import Todo
 
 def index(request):
-    return render(request, 'todo/index.html')
+    todos = Todo.objects.all()
+    context = {'todos': todos}
+    return render(request, 'todo/index.html', context)
 
 def create_todo(request):
     form = TodoForm()
