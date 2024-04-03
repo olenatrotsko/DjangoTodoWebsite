@@ -42,7 +42,7 @@ Todo: {{todo.title}}
             </p>
 
             {% endif %}
-         <a href="" class="ui button primary">Edit</a>
+         <a href={% url 'todo-edit' todo.pk %} class="ui button primary">Edit</a>
          <a href={% url 'todo-delete' todo.pk %} class="ui button red">Delete</a>
         </div>
 

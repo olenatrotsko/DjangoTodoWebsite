@@ -13,6 +13,7 @@ def get_showing_todos(request, todos):
             todos = todos.filter(is_completed=False)
     return todos
 
+
 def index(request):
     todos = Todo.objects.all()
     
@@ -27,6 +28,7 @@ def index(request):
         'all_count': all_count,
         }
     return render(request, 'todo/index.html', context)
+
 
 def create_todo(request):
     form = TodoForm()
@@ -43,13 +45,15 @@ def create_todo(request):
         todo.is_completed = True if is_completed == 'on' else False
     
         todo.save()
-        return HttpResponseRedirect(reverse("todo-detail", args={'id': todo.pk}))
+        return HttpResponseRedirect(reverse("todo-detail", args=[todo.pk]))
     return render(request, 'todo/create_todo.html', context)
+
 
 def todo_detail(request, id):
     todo = get_object_or_404(Todo, pk=id)
     context = {'todo': todo}
     return render(request, 'todo/todo_detail.html', context)
+
 
 def todo_delete(request, id):
     todo = get_object_or_404(Todo, pk=id)
@@ -59,3 +63,25 @@ def todo_delete(request, id):
         return HttpResponseRedirect(reverse("home"))
     
     return render(request, 'todo/todo_delete.html', context)
+
+
+def todo_edit(request, id):
+    todo = get_object_or_404(Todo, pk=id)
+    form = TodoForm(instance=todo)
+    context = {
+        'todo': todo,
+        'form': form,
+        }
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        is_completed = request.POST.get('is_completed', False)
+
+        todo.title = title
+        todo.description = description
+        todo.is_completed = True if is_completed == 'on' else False
+    
+        todo.save()
+        return HttpResponseRedirect(reverse("todo-detail", kwargs={'id': todo.pk}))
+    
+    return render(request, 'todo/todo_edit.html', context)
