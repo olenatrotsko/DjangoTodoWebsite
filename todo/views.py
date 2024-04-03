@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
 from django.urls import reverse
 
 from .forms import TodoForm
@@ -45,6 +46,9 @@ def create_todo(request):
         todo.is_completed = True if is_completed == 'on' else False
     
         todo.save()
+
+        messages.add_message(request, messages.SUCCESS, 'Todo created successfully')
+
         return HttpResponseRedirect(reverse("todo-detail", args=[todo.pk]))
     return render(request, 'todo/create_todo.html', context)
 
@@ -82,6 +86,9 @@ def todo_edit(request, id):
         todo.is_completed = True if is_completed == 'on' else False
     
         todo.save()
+
+        messages.add_message(request, messages.SUCCESS, 'Todo updated successfully')
+
         return HttpResponseRedirect(reverse("todo-detail", kwargs={'id': todo.pk}))
     
     return render(request, 'todo/todo_edit.html', context)
