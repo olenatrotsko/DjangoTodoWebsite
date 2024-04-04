@@ -46,9 +46,9 @@ def register_user(request):
         user.save()
         messages.add_message(request, messages.SUCCESS, 'Account created successfully')
 
-        return redirect('login_user')
+        return redirect('login')
     
-    return render(request, 'authentication/register.html', context)
+    return render(request, 'authentication/register.html')
 
 def login_user(request):
     if request.method == 'POST':

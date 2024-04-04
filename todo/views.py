@@ -16,7 +16,7 @@ def get_showing_todos(request, todos):
 
 
 def index(request):
-    todos = Todo.objects.all()
+    todos = Todo.objects.filter(owner=request.user)
     
     completed_count=todos.filter(is_completed=True).count()
     incomplete_count=todos.filter(is_completed=False).count()
@@ -44,7 +44,8 @@ def create_todo(request):
         todo.title = title
         todo.description = description
         todo.is_completed = True if is_completed == 'on' else False
-    
+        todo.owner = request.user
+
         todo.save()
 
         messages.add_message(request, messages.SUCCESS, 'Todo created successfully')
@@ -63,7 +64,8 @@ def todo_delete(request, id):
     todo = get_object_or_404(Todo, pk=id)
     context = {'todo': todo}
     if request.method == 'POST':
-        todo.delete()
+        if todo.owner == request.user:
+            todo.delete()
         return HttpResponseRedirect(reverse("home"))
     
     return render(request, 'todo/todo_delete.html', context)
@@ -84,8 +86,9 @@ def todo_edit(request, id):
         todo.title = title
         todo.description = description
         todo.is_completed = True if is_completed == 'on' else False
-    
-        todo.save()
+
+        if todo.owner == request.user:
+            todo.save()
 
         messages.add_message(request, messages.SUCCESS, 'Todo updated successfully')
 
