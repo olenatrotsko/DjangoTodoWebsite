@@ -20,7 +20,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
-    path('/', include('todo.urls')),
+    path('', include('todo.urls')),
 ]
 
 handler404 = 'helpers.views.handle_not_found'

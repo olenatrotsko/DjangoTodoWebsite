@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .forms import TodoForm
@@ -14,7 +15,7 @@ def get_showing_todos(request, todos):
             todos = todos.filter(is_completed=False)
     return todos
 
-
+@login_required
 def index(request):
     todos = Todo.objects.filter(owner=request.user)
     
@@ -30,7 +31,7 @@ def index(request):
         }
     return render(request, 'todo/index.html', context)
 
-
+@login_required
 def create_todo(request):
     form = TodoForm()
     context = {'form': form}
@@ -53,13 +54,13 @@ def create_todo(request):
         return HttpResponseRedirect(reverse("todo-detail", args=[todo.pk]))
     return render(request, 'todo/create_todo.html', context)
 
-
+@login_required
 def todo_detail(request, id):
     todo = get_object_or_404(Todo, pk=id)
     context = {'todo': todo}
     return render(request, 'todo/todo_detail.html', context)
 
-
+@login_required
 def todo_delete(request, id):
     todo = get_object_or_404(Todo, pk=id)
     context = {'todo': todo}
@@ -70,7 +71,7 @@ def todo_delete(request, id):
     
     return render(request, 'todo/todo_delete.html', context)
 
-
+@login_required
 def todo_edit(request, id):
     todo = get_object_or_404(Todo, pk=id)
     form = TodoForm(instance=todo)
