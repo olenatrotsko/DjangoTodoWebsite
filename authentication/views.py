@@ -1,11 +1,14 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from validate_email import validate_email
 
 from authentication.models import User
+from helpers.decorators import auth_user_should_not_access
 
+@auth_user_should_not_access
 def register_user(request):
     if request.method == 'POST':
         context = {'has_error': False, 'data': request.POST}
@@ -50,6 +53,7 @@ def register_user(request):
     
     return render(request, 'authentication/register.html')
 
+@auth_user_should_not_access
 def login_user(request):
     if request.method == 'POST':
         context = {'data': request.POST}
@@ -68,6 +72,7 @@ def login_user(request):
         
     return render(request, 'authentication/login.html')
 
+@login_required
 def logout_user(request):
     logout(request)
     messages.add_message(request, messages.SUCCESS, 'Successfully logged out')
