@@ -91,11 +91,11 @@ def login_user(request):
 
         if not user.is_email_verified:
             messages.add_message(request, messages.ERROR, 'Please verify your email address')
-            return render(request, 'authentication/login.html', context)
+            return render(request, 'authentication/login.html', context, status=401)
         
         if not user:
             messages.add_message(request, messages.ERROR, 'Invalid credentials')
-            return render(request, 'authentication/login.html', context)
+            return render(request, 'authentication/login.html', context, status=401)
         
         login(request, user)
         messages.add_message(request, messages.SUCCESS, f'Welcome {username}!')

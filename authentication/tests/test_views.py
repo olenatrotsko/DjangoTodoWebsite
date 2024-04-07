@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from utils.setup_test import TestSetup
@@ -30,11 +29,25 @@ class TestViews(TestSetup):
     def test_should_not_signup_user_with_taken_email(self):
         self.user2 = {
             'username': 'testuser2',
-            'email': 'test@gmail.com',
+            'email': 'testuser@email.com',
             'password': 'password123',
             'password2': 'password123',
         }
         self.client.post(reverse('register'), self.user)
         response = self.client.post(reverse('register'), self.user2)
         self.assertEqual(response.status_code, 409)
+
+
+    def test_should_login_successfully(self):
+        user = self.create_test_user()
+        response = self.client.post(reverse("login"), {
+            'username': 'testuser',
+            'password': 'password123'
+        })
+
+        self.assertEquals(response.status_code, 302)
+
+        storage = get_messages(response.wsgi_request)
+
+        self.assertIn(f"Welcome {user.username}!", [message.message for message in storage])
    
