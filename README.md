@@ -6,8 +6,6 @@ A simple Django-based web application for managing and tracking tasks.
 
 - User authentication (register, login, logout)
 - Create, read, update, and delete (CRUD) tasks
-- Task categorization
-- Task due dates and priorities
 
 ## Prerequisites
 
